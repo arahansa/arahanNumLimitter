@@ -1,5 +1,16 @@
 
 (function($) {
+	const 
+		 BACKSPACE_KEY = 8
+		, END_KEY = 35
+		, RIGHT_KEY = 39
+		, ARROW_DOWN = 40
+		, DELETE_KEY = 46
+		, ZERO = 48 
+		, NINE = 57
+		, F1_KEY = 112
+		, F12_KEY = 123
+		;
 
 	$.fn.setSelectionRange = function(start, end) {
 		return this.each(function() {
@@ -52,7 +63,10 @@
 
 		// 도우미 함수들 모음
 		base.isNumberCode = function(c){
-			return 48<=c && c<=57;
+			return ZERO <=c && c <= NINE;
+		}
+		base.isNavigationCode = function(c){
+			return END_KEY < c && c < ARROW_DOWN;
 		}
 
 		// 어디선가 가져온 소스인데 어딘지 모르겠습니다.ㅠㅠ... 
@@ -96,7 +110,7 @@
 		base.keyUpBaseElem = function(e){
 			var c = e.keyCode;
 			
-			if (  (35 < c && c < 40) || (c==8 || c==46 ) || base.isNumberCode(c) ){
+			if (  base.isNavigationCode(c) || (c==BACKSPACE_KEY || c==DELETE_KEY ) || base.isNumberCode(c) ){
 				return false;
 			}
 			
@@ -116,9 +130,9 @@
 		// 키다운
 		base.keyDownBaseElem = function(e){
 			var c = e.keyCode;
-			var isNotNumber = c < 48 || 57 < c;
-			var isNotArrow =   c < 8  ||  46 < c;
-			var isNotFKey = c > 123 || c < 112;
+			var isNotNumber = c < ZERO || NINE < c;
+			var isNotArrow =   c < BACKSPACE_KEY  ||  DELETE_KEY < c;
+			var isNotFKey = c > F12_KEY || c < F1_KEY;
 
 			var startPos = base.getSelectionStart( base.el );
 			var differ = (base.$el.val().length - startPos );
@@ -131,22 +145,24 @@
 				return false;
 			}
 
-			if(c==40 || c==35){
+			if(c == ARROW_DOWN || c == END_KEY){
 				e.preventDefault();
 				var lastLength = base.$el.val().length - base.options.limitNumber;
 				base.$el.setSelectionRange( lastLength, lastLength );
+				return false;
 			}
 
 			// 지정한 단계 밑에서 백스페이스 방지
-			if ( (differ < base.options.limitNumber &&  c == 8) ){ 
+			if ( (differ < base.options.limitNumber &&  c == BACKSPACE_KEY) ){ 
 				e.preventDefault();
+				return false;
 			}
 			
 			// 지정한 단계 앞에서 오른쪽방향키와 딜리트 방지
 			if(  differ < (base.options.limitNumber + 1)  ){ 
 				switch(c){
-					case 39:
-					case 46:
+					case RIGHT_KEY:
+					case DELETE_KEY:
 						e.preventDefault();
 				}
 			}
