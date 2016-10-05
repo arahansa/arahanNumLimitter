@@ -12,8 +12,11 @@
 
 # 사용법
 사용법1.   $(요소선택자).arahanNumLimitter(옵션들);
-사용법2.  <input type="text" class="클래스명" data-limitNumber="1" data-initalValue="2000" > 후 $(".클래스명").arahanNumLimitter(); 로도 할 수 있게함
-
+사용법2.  
+<pre><code>
+<input type="text" class="클래스명" data-limitNumber="1" data-initalValue="2000" > // 으로 요소에서 선언하고
+$(".클래스명").arahanNumLimitter(); // 로도 할 수 있게함
+</pre></code>
 # 옵션들에 줄수있는 것들
 <pre><code>
 {
