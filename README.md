@@ -7,7 +7,7 @@
 예를 들자면 1000원에서 밑의 1의자리는 무조건 0으로 맞추게 한다던가...
 
 (링크는 컨트롤 키를 눌르고 새창으로 눌러주시는 미덕..)
-[https://arahansa.github.io/arahanNumLimitter/arahanNumLimitter.html](https://arahansa.github.io/arahanNumLimitter/arahanNumLimitter.html)
+[https://arahansa.github.io/arahanNumLimitter/index.html](https://arahansa.github.io/arahanNumLimitter/index.html)
 
 
 # 사용법
