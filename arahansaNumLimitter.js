@@ -157,9 +157,9 @@
 				e.preventDefault();
 				return false;
 			}
-			
+						
 			// 지정한 단계 앞에서 오른쪽방향키와 딜리트 방지
-			if(  differ < (base.options.limitNumber + 1)  ){ 
+			if(  differ < (Number(base.options.limitNumber) + 1)  ){ 
 				switch(c){
 					case RIGHT_KEY:
 					case DELETE_KEY:
