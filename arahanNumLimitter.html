@@ -12,14 +12,30 @@ body{
 </style>
 <body>
   
+ <h3>가격 리미터<h3> 
+	<pre><code>
+	defaultOptions = {
+	  	'initalValue' : 1000,  //초기 금액
+	  	'limitNumber' : 2, // 자리수
+	  	'basicMsg' : "숫자와 기본적인 방향키만 입력할 수 있습니다", // 
+	  	'msgAlert' : true,
+	  	
+	  	'minValue' : 1000, // 최소가격
+	  	'maxValue' : 100000, // 최대가격
+	  	'validMinMax' : true, // 밸리데이션할지 여부
+	  	'errorClassName' : 'errorValidation', // 밸리데이션 실패시 추가될 에러클래스명
+	  	'validMinMaxFunc' : function(min, max){  // 밸리데이션 실패시 발생할 함수
+	  		alert( min + "와 "+max+" 사이의 값을 입력해주셔야 합니다");
+	  	}
+	</code></pre>
 
 타입 1 테스트 <input type="text" class="type1"> <br>
 타입 1 테스트 <input type="text" class="type1"> <br>
 
 <br>
-타입 2 테스트 ( 1의 자릿수로 제한 하고 initalValue 2000 으로 데이터로 줌 ) (input 에 data-limitNumber="1" data-initalValue="2000" 줌 ) <br>
+타입 2 테스트 ( 1의 자릿수로 제한 하고 initalValue 4000 으로 데이터로 줌 ) (input 에 data-limitNumber="1" data-initalValue="4000" 줌 ) <br>
 
-<input type="text" class="type2" data-limitNumber="1" data-initalValue="2000"> <br>
+<input type="text" class="type2" data-limitNumber="1" data-initalValue="4000"> <br>
 <br>
 
 <br>

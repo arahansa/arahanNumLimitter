@@ -42,7 +42,7 @@
 		base.$el.data("arahanNumLimitter", base);
 
 		base.init = function(){
-			var datableOptions = ['limitNumber', 'msgAlert', 'initalValue', 'basicMsg'];
+			var datableOptions = ['initalValue', 'limitNumber', 'basicMsg' , 'msgAlert','minValue', 'maxValue', 'validMinMax', 'errorClassName'];
 
 			 base.options = $.extend({}, $.arahanNumLimitter.defaultOptions, options);
 			 
@@ -53,10 +53,11 @@
       		 	}
 			 });
 
-			$(el).click(base.clickBaseElem);
-			$(el).focus(base.clickBaseElem);
-			$(el).keyup(base.keyUpBaseElem);
-			$(el).keydown(base.keyDownBaseElem);
+			base.$el.click(base.clickBaseElem);
+			base.$el.focus(base.clickBaseElem);
+			base.$el.keyup(base.keyUpBaseElem);
+			base.$el.keydown(base.keyDownBaseElem);
+			base.$el.focusout(base.focusOutBaseElem);
       		
 			base.options.init(base.el);
 		}
@@ -69,6 +70,7 @@
 			return END_KEY < c && c < ARROW_DOWN;
 		}
 
+		// 커서 위치 세팅
 		// 어디선가 가져온 소스인데 어딘지 모르겠습니다.ㅠㅠ... 
 		base.setSelectionRange = function(start, end) {
 			return this.each(function() {
@@ -86,6 +88,7 @@
 			});
 		}
 
+		// 현재 커서 위치 구함
 		// 참고 소스 http://javascript.nwbox.com/cursor_position/
 		base.getSelectionStart = function(o) {
 			if (o.createTextRange) {
@@ -96,7 +99,7 @@
 			} else return o.selectionStart
 		}
 
-		// 최초클릭
+		// 포커스 들어올 시 가격 제한 설정 걸림
 		base.clickBaseElem = function(e){
 			if(!base.isInitValue){
 				base.$el.val(base.options.initalValue)
@@ -105,6 +108,8 @@
 			var cursorPosition = base.$el.val().length - base.options.limitNumber;
 			base.$el.setSelectionRange(cursorPosition, cursorPosition);
 		}
+
+		base.setCursorBasicPoint
 
 		// 키업
 		base.keyUpBaseElem = function(e){
@@ -137,6 +142,13 @@
 			var startPos = base.getSelectionStart( base.el );
 			var differ = (base.$el.val().length - startPos );
 			
+			// hacky 한 방법으로 마우스 커서를 이동시키게 했을 경우에는 자릿수로 이동시킨다.
+			if(differ < base.options.limitNumber){
+				var cursorPosition = base.$el.val().length - base.options.limitNumber;
+				base.$el.setSelectionRange( cursorPosition , cursorPosition );
+			}
+
+			// 숫자가 아니거나 화살표키가 아니거나 F키가 아닌 경우에는 입력제한 시킨다.
 			if( isNotNumber && isNotArrow && isNotFKey){
 				if( base.options.msgAlert != "false" ){
 					alert(base.options.basicMsg);	
@@ -145,6 +157,7 @@
 				return false;
 			}
 
+			// end 키나 화살표 밑의 키로 가는 경우에는 최소 자릿수로 이동시킨다.
 			if(c == ARROW_DOWN || c == END_KEY){
 				e.preventDefault();
 				var lastLength = base.$el.val().length - base.options.limitNumber;
@@ -152,13 +165,13 @@
 				return false;
 			}
 
-			// 지정한 단계 밑에서 백스페이스 방지
+			// 최소 자릿수 밑에서 백스페이스 방지
 			if ( (differ < base.options.limitNumber &&  c == BACKSPACE_KEY) ){ 
 				e.preventDefault();
 				return false;
 			}
 						
-			// 지정한 단계 앞에서 오른쪽방향키와 딜리트 방지
+			// 최소 자릿수 바로 앞에서 오른쪽방향키와 딜리트 방지
 			if(  differ < (Number(base.options.limitNumber) + 1)  ){ 
 				switch(c){
 					case RIGHT_KEY:
@@ -168,17 +181,39 @@
 			}
 		}
 
+		// 포커스를 잃을 때 가격 제한 밸리데이션이 걸려있다면 특정함수를 발동시킨다.
+		base.focusOutBaseElem = function(e){
+			var validMinMax = base.options.validMinMax != "false";
+			var isValidValue = base.$el.val() < base.options.minValue || base.$el.val() > base.options.maxValue;
+			if( validMinMax && isValidValue){
+				base.options.validMinMaxFunc(base.options.minValue, base.options.maxValue);
+				base.$el.focus();
+				base.$el.addClass(base.options.errorClassName);
+			}else{
+				base.$el.removeClass(base.options.errorClassName);
+			}
+		}
+
 		base.init();
 	}
 
 
   $.arahanNumLimitter.defaultOptions = {
-  	'initalValue' : 1000,  //초기 금액
+  	'initalValue' : 3000,  //초기 금액
   	'limitNumber' : 2, // 자리수
   	'basicMsg' : "숫자와 기본적인 방향키만 입력할 수 있습니다", // 
   	'msgAlert' : true,
+  	
+  	'minValue' : 3000,
+  	'maxValue' : 100000,
+  	'validMinMax' : true,
+  	'errorClassName' : 'errorValidation',
+  	'validMinMaxFunc' : function(min, max){
+  		alert( min + "와 "+max+" 사이의 값을 입력해주셔야 합니다");
+  	},
+
   	// Callback API
-    init                        : function(el){}            // Callback: function(element) - Fires after the counter is initially setup (text카운터 참조)
+    'init' : function(el){}            // Callback: function(element) - Fires after the counter is initially setup (text카운터 참조)
   }	
 
   $.fn.arahanNumLimitter = function(options) {
