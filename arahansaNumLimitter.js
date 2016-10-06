@@ -108,6 +108,7 @@
 			base.setCursorBasicPoint();
 		}
 
+		// 초기 커서 위치로 이동
 		base.setCursorBasicPoint = function(e){
 			var cursorPosition = base.$el.val().length - base.options.limitNumber;
 			base.$el.setSelectionRange(cursorPosition, cursorPosition);
@@ -185,8 +186,8 @@
 		// 포커스를 잃을 때 가격 제한 밸리데이션이 걸려있다면 특정함수를 발동시킨다.
 		base.focusOutBaseElem = function(e){
 			var validMinMax = base.options.validMinMax != "false";
-			var isValidValue = base.$el.val() < base.options.minValue || base.$el.val() > base.options.maxValue;
-			if( validMinMax && isValidValue){
+			var isNotValidValue = base.$el.val() < base.options.minValue || base.$el.val() > base.options.maxValue;
+			if( validMinMax && isNotValidValue){
 				base.options.validMinMaxFunc(base.options.minValue, base.options.maxValue);
 				base.$el.focus();
 				base.$el.addClass(base.options.errorClassName);
