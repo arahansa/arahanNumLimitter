@@ -25,6 +25,14 @@ $(".클래스명").arahanNumLimitter(); // 로도 할 수 있게함
 'basicMsg' : "숫자와 기본적인 방향키만 입력할 수 있습니다", //  글자 입력시 띄울 메시지
 'msgAlert' : true, // 글자 입력할 때 메시지 띄울 것인지.
 'init' : function(el){} // textcounter 참조한 인잇? 그냥 넣어봤다. ㅋ
+
+'minValue' : 3000, // 최소가격
+'maxValue' : 100000, // 최대가격
+'validMinMax' : true, // 밸리데이션할지 여부
+'errorClassName' : 'errorValidation', // 밸리데이션 실패시 추가될 에러클래스명
+'validMinMaxFunc' : function(min, max){  // 밸리데이션 실패시 발생할 함수
+	alert( min + "와 "+max+" 사이의 값을 입력해주셔야 합니다");
+
 }    
 </pre></code>
 # 참고소스
