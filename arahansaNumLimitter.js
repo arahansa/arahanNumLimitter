@@ -105,11 +105,13 @@
 				base.$el.val(base.options.initalValue)
 				base.isInitValue = true;
 			}
+			base.setCursorBasicPoint();
+		}
+
+		base.setCursorBasicPoint = function(e){
 			var cursorPosition = base.$el.val().length - base.options.limitNumber;
 			base.$el.setSelectionRange(cursorPosition, cursorPosition);
 		}
-
-		base.setCursorBasicPoint
 
 		// 키업
 		base.keyUpBaseElem = function(e){
@@ -144,8 +146,7 @@
 			
 			// hacky 한 방법으로 마우스 커서를 이동시키게 했을 경우에는 자릿수로 이동시킨다.
 			if(differ < base.options.limitNumber){
-				var cursorPosition = base.$el.val().length - base.options.limitNumber;
-				base.$el.setSelectionRange( cursorPosition , cursorPosition );
+				base.setCursorBasicPoint();
 			}
 
 			// 숫자가 아니거나 화살표키가 아니거나 F키가 아닌 경우에는 입력제한 시킨다.
