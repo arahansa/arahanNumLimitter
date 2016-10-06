@@ -189,7 +189,10 @@
 			var isNotValidValue = base.$el.val() < base.options.minValue || base.$el.val() > base.options.maxValue;
 			if( validMinMax && isNotValidValue){
 				base.options.validMinMaxFunc(base.options.minValue, base.options.maxValue);
-				base.$el.focus();
+				// focusOut infinite loop 문제 해결 http://stackoverflow.com/questions/14126947/focusout-event-loop
+				window.setTimeout(function(){
+					base.$el.focus();	
+				},1);
 				base.$el.addClass(base.options.errorClassName);
 			}else{
 				base.$el.removeClass(base.options.errorClassName);
